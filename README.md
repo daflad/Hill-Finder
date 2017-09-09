@@ -1,4 +1,2 @@
 # Hill-Finder
-A program parsing GXP route and isolating the hills
-
-Lets go find some hills boys!
+A program parsing GXP routes and isolating the hills
