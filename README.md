@@ -10,25 +10,25 @@ grade = (vertical climb / horizontal distance) * 100
 
 ## Grade bands
 
-//
-//  3 -  4 %
-//  5 -  7 %
-//  8 -  9 %
-// 10 - 15 %
-// 15 +    %
-//
-//
+
+*  3 -  4 %
+*  5 -  7 %
+*  8 -  9 %
+* 10 - 15 %
+* 15 +    %
+
+
 
 ## Classifications (UCI - Standard)
 
-//
-// 4th Category 		– 	climbs of  100 -  300 meters
-// 3rd Category 		– 	climbs of  300 -  600 meters
-// 2nd Category 		– 	climbs of  600 - 1100 meters
-// 1st Category 		– 	climbs of 1100 - 1500 meters
-// Hors Category (HC) 	– 	climbs of 1500 +      meters
-//
-//
+
+ 4th Category 		– 	climbs of  100 -  300 meters
+ 3rd Category 		– 	climbs of  300 -  600 meters
+ 2nd Category 		– 	climbs of  600 - 1100 meters
+ 1st Category 		– 	climbs of 1100 - 1500 meters
+ Hors Category (HC) 	– 	climbs of 1500 +      meters
+
+
 
 ## The distance factor
 
