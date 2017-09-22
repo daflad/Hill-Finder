@@ -84,3 +84,24 @@ func TestGetMetrics(t *testing.T) {
 		t.Error("Expected 2.2757325325296796, got ", r.AvgSpeed)
 	}
 }
+
+func TestFindNoClimbs(t *testing.T) {
+	var r Route
+	r.Data.Open("../TestData/SimpleRoute.gpx")
+	r.FindClimbs()
+	nHills := len(r.Hills)
+	if nHills != 0 {
+		t.Error("Expected 0, got ", nHills)
+	}
+}
+
+func TestFindTenClimbs(t *testing.T) {
+	var r Route
+	r.Data.Open("../TestData/Ogwen, beris, tragrth, Ogwen .gpx")
+	r.GetMetrics()
+	r.FindClimbs()
+	sHills := len(r.Hills)
+	if sHills != 10 {
+		t.Error("Expected 10, got ", sHills)
+	}
+}
