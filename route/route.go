@@ -2,7 +2,6 @@ package route
 
 import (
 	"encoding/xml"
-	"log"
 	"math"
 	"os"
 	"time"
@@ -50,15 +49,13 @@ type Location struct {
 }
 
 //Open a gpx file & decode the XML
-func (g *GPX) Open(filePath string) {
+func (g *GPX) Open(filePath string) error {
 	file, err := os.Open(filePath)
-	if err != nil {
-		log.Fatal(err)
+	if err == nil {
+		defer file.Close()
+		err = xml.NewDecoder(file).Decode(g)
 	}
-	defer file.Close()
-	if err := xml.NewDecoder(file).Decode(g); err != nil {
-		log.Fatal(err)
-	}
+	return err
 }
 
 //GetMetrics Calculate extra route metrics

@@ -14,6 +14,10 @@
     <ele>287.5</ele>
     <time>2016-08-02T17:14:00Z</time>
    </trkpt>
+   <trkpt lat="53.1362530" lon="-4.1234790">
+    <ele>287.5</ele>
+    <time>2016-08-02T17:14:00Z</time>
+   </trkpt>
   </trkseg>
  </trk>
 </gpx>

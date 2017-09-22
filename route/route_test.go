@@ -4,13 +4,25 @@ import "testing"
 
 func TestOpen(t *testing.T) {
 	var r Route
+	//Testing invalid path
+	err := r.Data.Open("fake/file/path")
+	if err.Error() != "open fake/file/path: no such file or directory" {
+		t.Error("Expected open fake/file/path: no such file or directory, got ", err.Error())
+	}
+	//Testing invalid gpx format
+	err = r.Data.Open("../TestData/InvalidRoute.gpx")
+	if err.Error() != "expected element type <gpx> but have <gpxs>" {
+		t.Error("Expected expected element type <gpx> but have <gpxs>, got ", err.Error())
+	}
+	//Testing valid open
 	r.Data.Open("../TestData/SimpleRoute.gpx")
 	v := len(r.Data.Track.Segments.Locations)
-	if v != 2 {
-		t.Error("Expected 2, got ", v)
+	if v != 3 {
+		t.Error("Expected 3, got ", v)
 	}
 	fp := r.Data.Track.Segments.Locations[0]
 	firstTime := fp.Time.UTC().String()
+	//Testing parsing
 	if firstTime != "2016-08-02 17:13:54 +0000 UTC" {
 		t.Error("Expected 2016-08-02 17:13:54 +0000 UTC, got ", firstTime)
 	}
@@ -39,6 +51,10 @@ func TestElevationGain(t *testing.T) {
 	if noGain != 0 {
 		t.Error("Expected 0, got ", noGain)
 	}
+	noGainValid := r.GetElevGain(2)
+	if noGainValid != 0 {
+		t.Error("Expected 0, got ", noGainValid)
+	}
 }
 
 func TestGetDistance(t *testing.T) {
@@ -51,5 +67,20 @@ func TestGetDistance(t *testing.T) {
 	noDist := r.GetDistance(0)
 	if noDist != 0 {
 		t.Error("Expected 0, got ", noDist)
+	}
+}
+
+func TestGetMetrics(t *testing.T) {
+	var r Route
+	r.Data.Open("../TestData/SimpleRoute.gpx")
+	r.GetMetrics()
+	if r.Ascent != 0.5 {
+		t.Error("Expected 0.5, got ", r.Ascent)
+	}
+	if r.Dist != 3.792887554216133 {
+		t.Error("Expected 3.792887554216133, got ", r.Dist)
+	}
+	if r.AvgSpeed != 2.2757325325296796 {
+		t.Error("Expected 2.2757325325296796, got ", r.AvgSpeed)
 	}
 }
