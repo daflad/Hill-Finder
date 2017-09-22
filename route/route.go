@@ -16,6 +16,8 @@ type Route struct {
 	Ascent   float64
 	AvgSpeed float64
 	Data     GPX
+	Sections []Section
+	Hills    []Hill
 }
 
 //GPX parsing from XML
