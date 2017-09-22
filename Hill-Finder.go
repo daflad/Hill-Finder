@@ -1,6 +1,6 @@
 package main
 
-import "daflad/Hill-Finder/route"
+import "github.com/daflad/Hill-Finder/route"
 
 func main() {
 	var r route.Route
