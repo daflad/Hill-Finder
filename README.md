@@ -8,7 +8,7 @@ in length with an average grade of 3% or more.
 
 grade = (vertical climb / horizontal distance) * 100
 
-## Grade bands
+### Grade bands
 
 
 *  3 -  4 %
@@ -19,7 +19,7 @@ grade = (vertical climb / horizontal distance) * 100
 
 
 
-## Classifications (UCI - Standard)
+### Classifications (UCI - Standard)
 
 
 * 4th Category 		– 	climbs of  100 -  300 meters
@@ -30,7 +30,7 @@ grade = (vertical climb / horizontal distance) * 100
 
 
 
-## The distance factor
+### The distance factor
 
 The distsance into the ride has a big impact on climb severity
 
@@ -46,7 +46,7 @@ Distance Factor
 
 
 
-## Calculating a category
+### Calculating a category
 
 Length of climb(m) * grade (%) * distance factor
 
