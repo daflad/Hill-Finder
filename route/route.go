@@ -3,15 +3,20 @@ package route
 import (
 	"encoding/xml"
 	"log"
+	"math"
 	"os"
+	"time"
 )
 
 //Route A sequence of GPX points
 type Route struct {
-	ID   int64
-	Name string
-	Date string
-	Data GPX
+	ID       int64
+	Name     string
+	Date     string
+	Dist     float64
+	Ascent   float64
+	AvgSpeed float64
+	Data     GPX
 }
 
 //GPX parsing from XML
@@ -35,12 +40,13 @@ type Segment struct {
 
 //Location parsing from XML
 type Location struct {
-	XMLName   xml.Name `xml:"trkpt"`
-	Latitude  float64  `xml:"lat,attr"`
-	Longitude float64  `xml:"lon,attr"`
-	Elevation float64  `xml:"ele"`
-	Time      string   `xml:"time"`
-	Gradient  float64
+	XMLName           xml.Name  `xml:"trkpt"`
+	Latitude          float64   `xml:"lat,attr"`
+	Longitude         float64   `xml:"lon,attr"`
+	Elevation         float64   `xml:"ele"`
+	Time              time.Time `xml:"time"`
+	Gradient          float64
+	DistanceFromStart float64
 }
 
 //Open a gpx file & decode the XML
@@ -53,4 +59,82 @@ func (g *GPX) Open(filePath string) {
 	if err := xml.NewDecoder(file).Decode(g); err != nil {
 		log.Fatal(err)
 	}
+}
+
+//GetMetrics Calculate extra route metrics
+//
+// Ascent 		: total elevation gain throughout route
+// Dist   		: total distance of route
+// DistanceFromStart: the distance from the start to the current location
+func (r *Route) GetMetrics() {
+	// Itterate list for data
+	for i := 0; i < len(r.Data.Track.Segments.Locations); i++ {
+		r.Ascent += r.GetElevGain(i)
+		r.Dist += r.GetDistance(i)
+		r.Data.Track.Segments.Locations[i].DistanceFromStart = r.Dist
+	}
+	// Speed = distance / time km/h
+	locations := r.Data.Track.Segments.Locations
+	t := locations[len(locations)-1].Time.Unix() - locations[0].Time.Unix()
+	r.AvgSpeed = r.Dist / 1000 / (float64(t) / 60 / 60)
+}
+
+//GetElevGain Calculate the difference in elevation if +ive
+func (r *Route) GetElevGain(index int) float64 {
+	// Don't want to go out of bounds!
+	if index < 1 {
+		return 0
+	}
+	// only return diff if gain in elevation found
+	locations := r.Data.Track.Segments.Locations
+	diff := locations[index].Elevation - locations[index-1].Elevation
+	if diff > 0 {
+		return diff
+	}
+	return 0
+
+}
+
+//GetDistance Calculate the distance between 2 Locations
+func (r *Route) GetDistance(index int) float64 {
+	// Don't want to go out of bounds!
+	if index < 1 {
+		return 0
+	}
+	locations := r.Data.Track.Segments.Locations
+	dist := r.Distance3D(locations[index], locations[index-1])
+	return dist
+}
+
+//Distance2D This uses the ‘haversine’ formula to calculate the great-circle distance between two points – that is,
+// the shortest distance over the earth’s surface – giving an ‘as-the-crow-flies’ distance between the points
+// (ignoring any hills, of course!).
+func (r *Route) Distance2D(a, b Location) float64 {
+	// Earth's radius in meters
+	EarthsRadius := 6371000.0
+
+	// Convert the diff in location, converted to radians
+	dLat := r.DegToRad(b.Latitude - a.Latitude)
+	dLon := r.DegToRad(b.Longitude - a.Longitude)
+
+	// The square of half the chord length between Locations
+	re := math.Sin(dLat/2)*math.Sin(dLat/2) +
+		math.Cos(r.DegToRad(a.Latitude))*math.Cos(r.DegToRad(b.Latitude))*math.Sin(dLon/2)*math.Sin(dLon/2)
+
+	// The angular distance in radians
+	c := 2 * math.Atan2(math.Sqrt(re), math.Sqrt(1-re))
+
+	return EarthsRadius * c
+}
+
+//Distance3D Calculate the distance between 2 locations given the elevation of each point
+func (r *Route) Distance3D(a, b Location) float64 {
+	planar := r.Distance2D(a, b)
+	height := math.Abs(b.Elevation - a.Elevation)
+	return math.Sqrt(math.Pow(planar, 2) + math.Pow(height, 2))
+}
+
+//DegToRad Convert from degrees to radians
+func (r *Route) DegToRad(deg float64) float64 {
+	return deg * math.Pi / 180
 }
