@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/daflad/Hill-Finder.svg?branch=master)](https://travis-ci.org/daflad/Hill-Finder)
-
+[![codecov](https://codecov.io/gh/daflad/Hill-Finder/branch/master/graph/badge.svg)](https://codecov.io/gh/daflad/Hill-Finder)
 # Hill-Finder
 A program parsing GXP routes and isolating the hills
 
