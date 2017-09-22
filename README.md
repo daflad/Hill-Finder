@@ -36,7 +36,7 @@ The distsance into the ride has a big impact on climb severity
 
 Distance Factor
 
-*   0 - 20 miles - 1.0
+*  \t 0 - 20 miles - 1.0
 *  20 - 40 miles - 1.1
 *  40 - 60 miles - 1.2
 *  60 - 70 miles - 1.3
