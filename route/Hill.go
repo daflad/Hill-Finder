@@ -1,7 +1,5 @@
 package route
 
-import "log"
-
 // ClimbFinder //////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -144,19 +142,19 @@ func (r *Route) FindClimbs() {
 						//	hill.End.End.Longitude, r.Sections[i].Grade)
 						i = j
 						r.Hills = append(r.Hills, hill)
-						log.Printf("Hill found, length: %4d m with avg Grade : %.2f%%", len(hill.Sections)*300, hill.AverageGrade)
+						// fmt.Printf("Hill found, length: %4d m with avg Grade : %.2f%%", len(hill.Sections)*300, hill.AverageGrade)
 						break
 					}
 				} else {
 					hill.Sections = append(hill.Sections, r.Sections[j])
 					hill.AverageGrade = (hill.AverageGrade + r.Sections[j].Grade) / 2
-					log.Printf("Hill Section Added: %4d grade: %.2f%%\n", j, r.Sections[j].Grade)
+					// fmt.Printf("Hill Section Added: %4d grade: %.2f%%\n", j, r.Sections[j].Grade)
 				}
 			}
 
 		}
 	}
-	log.Printf("# Hills found: %v", len(r.Hills))
+	// log.Printf("# Hills found: %v", len(r.Hills))
 	// var start, end Location
 	// var hill Hill
 }
