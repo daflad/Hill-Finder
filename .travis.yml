@@ -5,3 +5,6 @@ go:
   - master
 
 script: go test ./route
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -t 33bc7e0a-2cdb-4150-b3a1-691f820943a8
