@@ -7,11 +7,11 @@
   <name>Test Route</name>
   <trkseg>
    <trkpt lat="53.1362830" lon="-4.1234530">
-    <ele>287.5</ele>
+    <ele>287.0</ele>
     <time>2016-08-02T17:13:54Z</time>
    </trkpt>
    <trkpt lat="53.1362530" lon="-4.1234790">
-    <ele>287.0</ele>
+    <ele>287.5</ele>
     <time>2016-08-02T17:14:00Z</time>
    </trkpt>
   </trkseg>

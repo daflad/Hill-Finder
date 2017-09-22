@@ -92,7 +92,6 @@ func (r *Route) GetElevGain(index int) float64 {
 		return diff
 	}
 	return 0
-
 }
 
 //GetDistance Calculate the distance between 2 Locations
