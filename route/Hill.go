@@ -1,5 +1,7 @@
 package route
 
+import "log"
+
 //Hill A hill found in a route
 type Hill struct {
 	ID           int
@@ -24,6 +26,7 @@ type Section struct {
 func (h *Hill) Category() string {
 	df := 1.0
 	dfs := h.Start.Start.DistanceFromStart
+	log.Println(dfs)
 	switch {
 	case dfs > 19 && dfs < 40:
 		df = 1.1
