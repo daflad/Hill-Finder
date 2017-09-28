@@ -83,6 +83,14 @@ func TestGetMetrics(t *testing.T) {
 	if r.AvgSpeed != 2.2757325325296796 {
 		t.Error("Expected 2.2757325325296796, got ", r.AvgSpeed)
 	}
+	expected := `Test Route -- 2016-08-02
+Distance: 0.00
+Ascent: 0.00
+Avg Speed: 2.28
+Number Hills: 0`
+	if expected != r.String() {
+		t.Error("Expected different string, got ", r.String())
+	}
 }
 
 func TestFindNoClimbs(t *testing.T) {
