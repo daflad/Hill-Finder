@@ -112,6 +112,48 @@ func TestFindOneClimbs(t *testing.T) {
 	if sHills != 1 {
 		t.Error("Expected 1, got ", sHills)
 	}
+	expected := "8.30, 2.31, 9.12%, 12.93%, 4th"
+	if expected != r.Hills[0].String() {
+		t.Error("Expected", expected, ", got ", r.Hills[0].String())
+	}
+}
+
+func TestCategories(t *testing.T) {
+	var r Route
+	r.Data.Open("../TestData/Ogwen, beris, tragrth, Ogwen .gpx")
+	r.GetMetrics()
+	r.FindClimbs()
+	r.Hills[0].Start.Start.DistanceFromStart = 80000
+	expected := "3rd"
+	if expected != r.Hills[0].Category() {
+		t.Error("Expected 3rd, got ", r.Hills[0].Category())
+	}
+	r.Hills[0].Start.Start.DistanceFromStart = 100000
+	if expected != r.Hills[0].Category() {
+		t.Error("Expected 3rd, got ", r.Hills[0].Category())
+	}
+	r.Hills[0].Start.Start.DistanceFromStart = 120000
+	if expected != r.Hills[0].Category() {
+		t.Error("Expected 3rd, got ", r.Hills[0].Category())
+	}
+	r.Hills[0].Start.Start.DistanceFromStart = 140000
+	r.Hills[0].AverageGrade = 30
+	expected = "1st"
+	if expected != r.Hills[0].Category() {
+		t.Error("Expected 3rd, got ", r.Hills[0].Category())
+	}
+	r.Hills[0].Start.Start.DistanceFromStart = 150000
+	r.Hills[0].AverageGrade = 15
+	expected = "2nd"
+	if expected != r.Hills[0].Category() {
+		t.Error("Expected 2nd, got ", r.Hills[0].Category())
+	}
+	r.Hills[0].Start.Start.DistanceFromStart = 190000
+	r.Hills[0].AverageGrade = 50
+	expected = "HC"
+	if expected != r.Hills[0].Category() {
+		t.Error("Expected HC, got ", r.Hills[0].Category())
+	}
 }
 
 func TestMetersToMiles(t *testing.T) {
