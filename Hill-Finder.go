@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/daflad/Hill-Finder/route"
 )
@@ -11,7 +11,8 @@ func main() {
 	r.Data.Open("TestData/Mynydd_beris_Capel_idwal_home.gpx")
 	r.GetMetrics()
 	r.FindClimbs()
+	fmt.Println(r.String())
 	for _, hill := range r.Hills {
-		log.Println(hill.String())
+		fmt.Println(hill.String())
 	}
 }

@@ -2,6 +2,7 @@ package route
 
 import (
 	"encoding/xml"
+	"fmt"
 	"math"
 	"os"
 	"time"
@@ -18,6 +19,15 @@ type Route struct {
 	Data     GPX
 	Sections []Section
 	Hills    []Hill
+}
+
+func (r *Route) String() string {
+	return fmt.Sprintf("%v -- %v\nDistance: %.2f\nAscent: %.2f\nAvg Speed: %.2f\n"+
+		"Number Hills: %d", r.Name, r.Date, metersTomiles(r.Dist), metersTomiles(r.Ascent), r.AvgSpeed, len(r.Hills))
+}
+
+func metersTomiles(distance float64) float64 {
+	return distance / 1000 / 8 * 5
 }
 
 //GPX parsing from XML
@@ -66,6 +76,7 @@ func (g *GPX) Open(filePath string) error {
 // Dist   		: total distance of route
 // DistanceFromStart: the distance from the start to the current location
 func (r *Route) GetMetrics() {
+	r.Name = r.Data.Track.Name
 	// Itterate list for data
 	for i := 0; i < len(r.Data.Track.Segments.Locations); i++ {
 		r.Ascent += r.GetElevGain(i)
@@ -76,6 +87,7 @@ func (r *Route) GetMetrics() {
 	locations := r.Data.Track.Segments.Locations
 	t := locations[len(locations)-1].Time.Unix() - locations[0].Time.Unix()
 	r.AvgSpeed = r.Dist / 1000 / (float64(t) / 60 / 60)
+	r.Date = locations[0].Time.Format("2006-01-02")
 }
 
 //GetElevGain Calculate the difference in elevation if +ive

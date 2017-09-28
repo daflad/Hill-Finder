@@ -105,3 +105,10 @@ func TestFindOneClimbs(t *testing.T) {
 		t.Error("Expected 1, got ", sHills)
 	}
 }
+
+func TestMetersToMiles(t *testing.T) {
+	v := metersTomiles(8000)
+	if v != 5 {
+		t.Error("Expected 5, got ", v)
+	}
+}
