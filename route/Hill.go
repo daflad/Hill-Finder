@@ -1,6 +1,6 @@
 package route
 
-import "log"
+import "fmt"
 
 //Hill A hill found in a route
 type Hill struct {
@@ -14,6 +14,20 @@ type Hill struct {
 	MinGrade     float64
 }
 
+func (h *Hill) String() string {
+	for _, s := range h.Sections {
+		if s.Grade > h.MaxGrade {
+			h.MaxGrade = s.Grade
+		}
+	}
+	return fmt.Sprintf("%.2f, %.2f, %.2f%%, %.2f%%, %v",
+		h.Start.Start.DistanceFromStart/1000/8*5,
+		(h.End.Start.DistanceFromStart-h.Start.Start.DistanceFromStart)/1000/8*5,
+		h.AverageGrade,
+		h.MaxGrade,
+		h.Category())
+}
+
 //Section A section of a hill
 type Section struct {
 	Start Location
@@ -25,8 +39,7 @@ type Section struct {
 //Length of climb(m) * grade (%) * distance factor
 func (h *Hill) Category() string {
 	df := 1.0
-	dfs := h.Start.Start.DistanceFromStart
-	log.Println(dfs)
+	dfs := h.Start.Start.DistanceFromStart / 1000 / 8 * 5
 	switch {
 	case dfs > 19 && dfs < 40:
 		df = 1.1

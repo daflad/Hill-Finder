@@ -95,13 +95,13 @@ func TestFindNoClimbs(t *testing.T) {
 	}
 }
 
-func TestFindTwoClimbs(t *testing.T) {
+func TestFindOneClimbs(t *testing.T) {
 	var r Route
 	r.Data.Open("../TestData/Ogwen, beris, tragrth, Ogwen .gpx")
 	r.GetMetrics()
 	r.FindClimbs()
 	sHills := len(r.Hills)
-	if sHills != 2 {
-		t.Error("Expected 2, got ", sHills)
+	if sHills != 1 {
+		t.Error("Expected 1, got ", sHills)
 	}
 }

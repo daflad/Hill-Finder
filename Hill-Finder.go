@@ -8,10 +8,10 @@ import (
 
 func main() {
 	var r route.Route
-	r.Data.Open("TestData/Ogwen, beris, tragrth, Ogwen .gpx")
+	r.Data.Open("TestData/Mynydd_beris_Capel_idwal_home.gpx")
 	r.GetMetrics()
 	r.FindClimbs()
 	for _, hill := range r.Hills {
-		log.Println(hill.Category())
+		log.Println(hill.String())
 	}
 }
