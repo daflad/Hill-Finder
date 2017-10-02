@@ -8,7 +8,7 @@ import (
 
 func main() {
 	var r route.Route
-	r.Data.Open("TestData/Mynydd_beris_Capel_idwal_home.gpx")
+	r.Data.Open("TestData/Evening ride to Pen-y-pass and back.gpx")
 	r.GetMetrics()
 	r.FindClimbs()
 	fmt.Println(r.String())

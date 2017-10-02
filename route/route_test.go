@@ -112,7 +112,7 @@ func TestFindOneClimbs(t *testing.T) {
 	if sHills != 1 {
 		t.Error("Expected 1, got ", sHills)
 	}
-	expected := "8.30, 2.31, 9.12%, 12.93%, 4th"
+	expected := "DFS:: 8.30,\tLEN:: 2.31,\tAGR:: 9.12%,\tMGR:: 12.93%,\tCAT:: 4th"
 	if expected != r.Hills[0].String() {
 		t.Error("Expected", expected, ", got ", r.Hills[0].String())
 	}

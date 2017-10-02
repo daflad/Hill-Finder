@@ -1,6 +1,9 @@
 package route
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 //Hill A hill found in a route
 type Hill struct {
@@ -9,6 +12,7 @@ type Hill struct {
 	Start        Section
 	End          Section
 	Sections     []Section
+	Ascent       float64
 	AverageGrade float64
 	MaxGrade     float64
 	MinGrade     float64
@@ -20,9 +24,10 @@ func (h *Hill) String() string {
 			h.MaxGrade = s.Grade
 		}
 	}
-	return fmt.Sprintf("%.2f, %.2f, %.2f%%, %.2f%%, %v",
-		h.Start.Start.DistanceFromStart/1000/8*5,
-		(h.End.Start.DistanceFromStart-h.Start.Start.DistanceFromStart)/1000/8*5,
+	return fmt.Sprintf("DFS:: %.2fmiles,\tLEN:: %.2fmiles,\tASC:: %.2fm,\tAGR:: %.2f%%,\tMGR:: %.2f%%,\tCAT:: %v",
+		metersTomiles(h.Start.Start.DistanceFromStart),
+		metersTomiles(h.End.Start.DistanceFromStart-h.Start.Start.DistanceFromStart),
+		h.Ascent,
 		h.AverageGrade,
 		h.MaxGrade,
 		h.Category())
@@ -75,6 +80,7 @@ func (h *Hill) Category() string {
 
 //FindClimbs Traverse the list of Locations to split route into 100m sections
 func (r *Route) FindClimbs() {
+	sectionLength := 250.0
 	locations := r.Data.Track.Segments.Locations
 	var sec Section
 	s := false
@@ -85,7 +91,7 @@ func (r *Route) FindClimbs() {
 			s = true
 		}
 		if !e {
-			if locations[i].DistanceFromStart-sec.Start.DistanceFromStart > 299 {
+			if locations[i].DistanceFromStart-sec.Start.DistanceFromStart > sectionLength {
 				sec.End = locations[i]
 				sec.Grade = ((sec.End.Elevation - sec.Start.Elevation) / (sec.End.DistanceFromStart - sec.Start.DistanceFromStart)) * 100
 				s = false
@@ -124,6 +130,23 @@ func (r *Route) FindClimbs() {
 						hill.End = r.Sections[j-1]
 						i = j
 						if hill.Category() != "None" {
+							maxElev, minElev := 0.0, 1000000000.0
+							for _, s := range hill.Sections {
+								if s.Start.Elevation > maxElev {
+									maxElev = s.Start.Elevation
+								}
+								if s.End.Elevation > maxElev {
+									maxElev = s.Start.Elevation
+								}
+								if s.Start.Elevation < minElev {
+									minElev = s.Start.Elevation
+								}
+								if s.End.Elevation < minElev {
+									minElev = s.Start.Elevation
+								}
+							}
+							log.Println(maxElev, minElev, len(hill.Sections))
+							hill.Ascent = maxElev - minElev
 							r.Hills = append(r.Hills, hill)
 						}
 						break

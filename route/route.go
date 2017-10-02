@@ -22,8 +22,8 @@ type Route struct {
 }
 
 func (r *Route) String() string {
-	return fmt.Sprintf("%v -- %v\nDistance: %.2f\nAscent: %.2f\nAvg Speed: %.2f\n"+
-		"Number Hills: %d", r.Name, r.Date, metersTomiles(r.Dist), metersTomiles(r.Ascent), r.AvgSpeed, len(r.Hills))
+	return fmt.Sprintf("%v -- %v\nDistance: %.2f\nAscent: %.2fm\nAvg Speed: %.2f\n"+
+		"Number Hills: %d", r.Name, r.Date, metersTomiles(r.Dist), r.Ascent, r.AvgSpeed, len(r.Hills))
 }
 
 func metersTomiles(distance float64) float64 {
