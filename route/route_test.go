@@ -85,7 +85,7 @@ func TestGetMetrics(t *testing.T) {
 	}
 	expected := `Test Route -- 2016-08-02
 Distance: 0.00
-Ascent: 0.00
+Ascent: 0.50m
 Avg Speed: 2.28
 Number Hills: 0`
 	if expected != r.String() {
@@ -109,10 +109,10 @@ func TestFindOneClimbs(t *testing.T) {
 	r.GetMetrics()
 	r.FindClimbs()
 	sHills := len(r.Hills)
-	if sHills != 1 {
-		t.Error("Expected 1, got ", sHills)
+	if sHills != 2 {
+		t.Error("Expected 2, got ", sHills)
 	}
-	expected := "DFS:: 8.30,\tLEN:: 2.31,\tAGR:: 9.12%,\tMGR:: 12.93%,\tCAT:: 4th"
+	expected := "DFS:: 7.86miles,	LEN:: 2.76miles,	ASC:: 118.30m,	AGR:: 11.59%,	MGR:: 15.94%,	CAT:: 3rd"
 	if expected != r.Hills[0].String() {
 		t.Error("Expected", expected, ", got ", r.Hills[0].String())
 	}
@@ -137,10 +137,10 @@ func TestCategories(t *testing.T) {
 		t.Error("Expected 3rd, got ", r.Hills[0].Category())
 	}
 	r.Hills[0].Start.Start.DistanceFromStart = 140000
-	r.Hills[0].AverageGrade = 30
+	r.Hills[0].AverageGrade = 25
 	expected = "1st"
 	if expected != r.Hills[0].Category() {
-		t.Error("Expected 3rd, got ", r.Hills[0].Category())
+		t.Error("Expected 1st, got ", r.Hills[0].Category())
 	}
 	r.Hills[0].Start.Start.DistanceFromStart = 150000
 	r.Hills[0].AverageGrade = 15

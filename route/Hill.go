@@ -1,9 +1,6 @@
 package route
 
-import (
-	"fmt"
-	"log"
-)
+import "fmt"
 
 //Hill A hill found in a route
 type Hill struct {
@@ -44,7 +41,7 @@ type Section struct {
 //Length of climb(m) * grade (%) * distance factor
 func (h *Hill) Category() string {
 	df := 1.0
-	dfs := h.Start.Start.DistanceFromStart / 1000 / 8 * 5
+	dfs := metersTomiles(h.Start.Start.DistanceFromStart)
 	switch {
 	case dfs > 19 && dfs < 40:
 		df = 1.1
@@ -132,20 +129,13 @@ func (r *Route) FindClimbs() {
 						if hill.Category() != "None" {
 							maxElev, minElev := 0.0, 1000000000.0
 							for _, s := range hill.Sections {
-								if s.Start.Elevation > maxElev {
-									maxElev = s.Start.Elevation
-								}
 								if s.End.Elevation > maxElev {
 									maxElev = s.Start.Elevation
 								}
 								if s.Start.Elevation < minElev {
 									minElev = s.Start.Elevation
 								}
-								if s.End.Elevation < minElev {
-									minElev = s.Start.Elevation
-								}
 							}
-							log.Println(maxElev, minElev, len(hill.Sections))
 							hill.Ascent = maxElev - minElev
 							r.Hills = append(r.Hills, hill)
 						}
